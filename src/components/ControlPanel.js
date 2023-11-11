@@ -252,7 +252,7 @@ function ControlPanel() {
     return new Promise((resolve, reject) => {
       setInterval(() => {
         resolve(true);
-      }, 5);
+      }, 10);
     });
   }
 
