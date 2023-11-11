@@ -88,7 +88,7 @@ function ControlPanel() {
     let arr = [...numbers];
     let n = arr.length;
 
-    for (let i = 1; i <= n; i++) {
+    for (let i = 1; i < n; i++) {
       let current = arr[i];
       let prev = i - 1;
 

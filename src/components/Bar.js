@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const StyledBar = styled.div`
-  width: 10px;
+  width: 50px;
   height: ${(props) => props.height * 7.5 + "px"};
   display: inline-block;
   background-color: aliceblue;
