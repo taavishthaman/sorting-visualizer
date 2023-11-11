@@ -55,10 +55,10 @@ const sortingAlgorithms = [
     value: "quick_sort",
     label: "Quick Sort",
   },
-  {
-    value: "heap_sort",
-    label: "Heap Sort",
-  },
+  // {
+  //   value: "heap_sort",
+  //   label: "Heap Sort",
+  // },
 ];
 function ControlPanel() {
   const { numbers, algorithm, isSorting, isComplete } = useSelector(
@@ -73,14 +73,56 @@ function ControlPanel() {
     for (let i = 0; i < n - 1; i++) {
       for (let j = 0; j < n - 1 - i; j++) {
         if (arr[j] > arr[j + 1]) {
-          await wait();
           let temp = arr[j + 1];
           arr[j + 1] = arr[j];
           arr[j] = temp;
+          await wait();
           let newArr = [...arr];
           dispatch(setNumbers(newArr));
         }
       }
+    }
+  }
+
+  async function insertionSort() {
+    let arr = [...numbers];
+    let n = arr.length;
+
+    for (let i = 1; i <= n; i++) {
+      let current = arr[i];
+      let prev = i - 1;
+
+      while (prev >= 0 && current < arr[prev]) {
+        arr[prev + 1] = arr[prev];
+        prev--;
+        await wait();
+        let newArr = [...arr];
+        dispatch(setNumbers(newArr));
+      }
+
+      arr[prev + 1] = current;
+      let newArr = [...arr];
+      await wait();
+      dispatch(setNumbers(newArr));
+    }
+  }
+
+  async function selectionSort() {
+    let arr = [...numbers];
+    let n = arr.length;
+
+    for (let i = 0; i < n - 1; i++) {
+      let min_pos = i;
+      for (let j = i + 1; j < n; j++) {
+        if (arr[j] < arr[min_pos]) {
+          min_pos = j;
+        }
+      }
+
+      [arr[i], arr[min_pos]] = [arr[min_pos], arr[i]];
+      await longWait();
+      let newArr = [...arr];
+      dispatch(setNumbers(newArr));
     }
   }
 
@@ -143,17 +185,65 @@ function ControlPanel() {
     await mergeSort(arr, 0, n - 1);
   }
 
+  async function partiton(arr, s, e) {
+    let i = s - 1;
+    let pivot = arr[e];
+
+    for (let j = s; j < e; j++) {
+      if (pivot > arr[j]) {
+        [arr[i + 1], arr[j]] = [arr[j], arr[i + 1]];
+        i++;
+        await wait();
+        let newArr = [...arr];
+        dispatch(setNumbers(newArr));
+      }
+    }
+
+    [arr[i + 1], arr[e]] = [arr[e], arr[i + 1]];
+    await wait();
+    let newArr = [...arr];
+    dispatch(setNumbers(newArr));
+    return i + 1;
+  }
+
+  async function quickSort(arr, s, e) {
+    if (s >= e) {
+      return;
+    }
+
+    let p = await partiton(arr, s, e);
+    await quickSort(arr, s, p - 1);
+    await quickSort(arr, p + 1, e);
+  }
+
+  async function quickSortWrapper() {
+    let arr = [...numbers];
+    let n = arr.length;
+
+    await quickSort(arr, 0, n - 1);
+  }
+
   async function sort() {
     if (isSorting || isComplete) return;
     if (algorithm === "bubble_sort") {
       dispatch(setSorting());
       await bubbleSort();
-      console.log("Here....");
+      dispatch(setComplete());
+    } else if (algorithm === "insertion_sort") {
+      dispatch(setSorting());
+      await insertionSort();
+      dispatch(setComplete());
+    } else if (algorithm === "selection_sort") {
+      dispatch(setSorting());
+      await selectionSort();
       dispatch(setComplete());
     } else if (algorithm === "merge_sort") {
       dispatch(setSorting());
       await mergeSortWrapper();
-      console.log("Here....");
+      dispatch(setComplete());
+    } else if (algorithm === "quick_sort") {
+      dispatch(setSorting());
+      await quickSortWrapper();
       dispatch(setComplete());
     }
   }
@@ -162,7 +252,15 @@ function ControlPanel() {
     return new Promise((resolve, reject) => {
       setInterval(() => {
         resolve(true);
-      }, 10);
+      }, 5);
+    });
+  }
+
+  async function longWait() {
+    return new Promise((resolve, reject) => {
+      setInterval(() => {
+        resolve(true);
+      }, 100);
     });
   }
 
