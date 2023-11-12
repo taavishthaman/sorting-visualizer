@@ -285,9 +285,17 @@ function ControlPanel() {
         styles={{
           option: (baseStyles) => ({
             ...baseStyles,
-            color: "grey",
+            color: "#777",
           }),
         }}
+        theme={(theme) => ({
+          ...theme,
+          borderradius: 0,
+          colors: {
+            ...theme.colors,
+            primary: "#9bbec8",
+          },
+        })}
       />
     </StyledControlPanel>
   );
