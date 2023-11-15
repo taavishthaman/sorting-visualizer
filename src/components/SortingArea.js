@@ -9,7 +9,6 @@ const Area = styled.div`
   justify-content: space-between;
   width: 100%;
   height: calc(100vh - 80px);
-  gap: 1px;
 `;
 
 function SortingArea() {

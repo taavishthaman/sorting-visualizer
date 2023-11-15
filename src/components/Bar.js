@@ -4,10 +4,8 @@ const StyledBar = styled.div`
   width: 50px;
   height: ${(props) => props.height * 7.5 + "px"};
   display: inline-block;
-  background-color: aliceblue;
-  border: 1px solid black;
-  border-top: 0px;
-  background-color: #9bbec8;
+  //background-color: #9bbec8;
+  background: linear-gradient(to bottom, #bae8e8, #2c698d);
 `;
 
 function Bar({ height }) {
