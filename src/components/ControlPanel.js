@@ -285,7 +285,7 @@ function ControlPanel() {
         styles={{
           option: (baseStyles) => ({
             ...baseStyles,
-            color: "#777",
+            color: "#444",
           }),
         }}
         theme={(theme) => ({
